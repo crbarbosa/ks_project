@@ -149,3 +149,41 @@ begin
         banco_de_reg(conv_integer(b_addr)) <= bus_b;
         banco_de_reg(conv_integer(c_addr)) <= bus_c;
       end if ;
+
+ --Registrador de Flags
+      if (flags_reg_enable = '1') then
+        neg_op <= ula_out(15);
+        if (ula_out = x"00") then
+            zero_op <= '1';
+        else
+            zero_op <= '0';
+        end if;
+      
+        if (operation = "10") then
+            if ((bus_a(15) ='0' and ula_out(15) ='1') or (bus_a(15) ='0' and bus_b(15) ='1') or (bus_b(15) ='1' and ula_out(15) ='1')) then  --A'C+A'B+BC
+                unsigned_overflow <= '1';
+            else
+                unsigned_overflow <= '0';
+            end if;
+            
+            if  ((bus_a(15) ='0' and bus_b(15) ='1' and ula_out(15) ='1') or (bus_a(15) ='1' and bus_b(15) ='0' and ula_out(15) ='0')) then --A'BC + AB'C'
+                signed_overflow <= '1';
+            else
+                signed_overflow <= '0';
+            end if;
+        end if ;
+      
+        if (operation = "01") then
+            if  ((ula_out(15) = '0' and bus_b(15) = '1') or (ula_out(15) = '0' and bus_a(15)='1') or (bus_b(15) = '1' and bus_a(15) ='1')) then --BC'+AC'+AB
+                unsigned_overflow <= '1';
+            else
+                unsigned_overflow <= '0';
+            end if;
+            
+            if (((bus_a(15) = '0' and bus_b(15) = '0' and ula_out(15) = '1') or (bus_a(15) = '1' and bus_b(15) = '1' and ula_out(15) ='0'))) then  --A'B'C + ABC'
+                signed_overflow <= '1';
+            else
+                signed_overflow <= '0';
+            end if;
+        end if;
+      end if;
