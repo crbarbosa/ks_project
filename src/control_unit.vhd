@@ -123,3 +123,84 @@ begin
                         when others =>
                             prox_estado <= HALTI;
                     end case;
+                when NOP =>
+                    ir_enable <= '0';
+                    flags_reg_enable <= '0';
+                    branch <= '0';
+                    pc_enable <='0';
+                    halt <= '0';
+                    write_reg_enable <='0';
+                    prox_estado <= PROX;
+
+                when HALTI =>
+                    ir_enable <= '0';
+                    flags_reg_enable <= '0';
+                    branch <= '0';
+                    pc_enable <='0';
+                    write_reg_enable <='0';
+                    halt <= '1';
+                    prox_estado <= HALTI;
+
+                when LOAD =>
+                    ir_enable <= '0';
+                    flags_reg_enable <= '0';
+                    addr_sel <= '0';
+                    branch <= '0';
+                    halt <= '0';
+                    write_reg_enable <= '0';
+                    prox_estado <= LOAD1;
+                    
+                when LOAD1 =>
+                    c_sel <= '1';
+                    write_reg_enable <= '1';
+                    prox_estado <= PROX;
+
+                when STORE =>
+                    addr_sel <= '0';    
+                    ram_write_enable <= '1';
+                    prox_estado <= PROX;      
+
+                when MOVE =>
+                    ir_enable <= '0';
+                    flags_reg_enable <= '0';
+                    operation <= "00";
+                    c_sel <= '0';
+                    halt <= '0';
+                    write_reg_enable <= '1';
+                    prox_estado <= PROX;
+                    
+                when ULA =>
+                    c_sel <= '0';
+                    write_reg_enable <= '1';
+                    ir_enable <= '0';
+                    flags_reg_enable <= '1';
+                    prox_estado <= PROX;
+
+                when BRANCHI =>
+                    branch <= '1';
+                    ir_enable <= '0';
+                    flags_reg_enable <= '0';
+                    addr_sel <= '0';  
+                    prox_estado <= PROX;
+
+                when PROX =>       
+                    ir_enable <= '0';
+                    flags_reg_enable <= '0';
+                    pc_enable <='1';
+                    addr_sel <= '1';
+                    halt <= '0';
+                    write_reg_enable <='0';
+                    ram_write_enable <='0';
+                    prox_estado <= PROX1;
+            
+                when others =>  --PROX1
+                    branch <= '0';
+                    ir_enable <= '0';
+                    flags_reg_enable <= '0';
+                    pc_enable <='0';
+                    halt <= '0';
+                    write_reg_enable <='0';
+                    prox_estado <= FETCH;
+            end case ;
+    end process ;
+end rtl;
