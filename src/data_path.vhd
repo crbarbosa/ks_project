@@ -1,19 +1,6 @@
 ----------------------------------------------------------------------------------
--- Company: UERGS
--- Engineer: Joao Leonardo Fragoso
--- 
--- Create Date:    19:04:44 06/26/2012 
--- Design Name:    K and S Modeling
--- Module Name:    data_path - rtl 
--- Description:    RTL Code for the K and S datapath
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
---          0.02 - Moving Vivado 2017.3
--- Additional Comments: 
---
+-- Trabalho K&S
+-- Alunos: Carlos Ricardo, Debora Garcia
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
@@ -44,9 +31,4 @@ entity data_path is
 end data_path;
 
 architecture rtl of data_path is
-
-begin
-    ram_addr <= (others => '0'); -- just to avoid messaging from test... remove this line
-
-end rtl;
 
