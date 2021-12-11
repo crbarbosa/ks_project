@@ -32,3 +32,32 @@ end data_path;
 
 architecture rtl of data_path is
 
+type reg_bank_type is array(natural range <>) of std_logic_vector(15 downto 0);
+  signal banco_de_reg : reg_bank_type(0 to 3);
+  signal  bus_a : std_logic_vector(15 downto 0);
+  signal  bus_b : std_logic_vector(15 downto 0);
+  signal  bus_c : std_logic_vector(15 downto 0);
+  signal  a_addr :  std_logic_vector(1 downto 0);
+  signal  b_addr :  std_logic_vector(1 downto 0);
+  signal  c_addr :  std_logic_vector(1 downto 0);
+  signal  ula_out :  std_logic_vector(15 downto 0);
+  signal  instruction :  std_logic_vector(15 downto 0);
+  signal  mem_addr  : std_logic_vector(4 downto 0);
+  signal  program_counter : std_logic_vector(4 downto 0);
+
+begin
+  
+  --Banco de registradores
+  bus_a <= banco_de_reg(conv_integer(a_addr));
+  bus_b <= banco_de_reg(conv_integer(b_addr));
+  bus_c <= ula_out when (c_sel = '0') else data_in; 
+
+  --Mux RAM
+  ram_addr <= mem_addr when (addr_sel = '0') else program_counter;
+
+  --Decoder
+  --Recebi: A11B
+  --Decode: decoded instruction <= ADD
+  --a_addr <= end. reg
+  --b_addr <= end. reg
+  --c_addr <= end. reg
