@@ -187,3 +187,23 @@ begin
             end if;
         end if;
       end if;
+
+       --Intepretador de Instrucoes
+       if (ir_enable = '1') then
+        instruction <= data_in;
+      end if;
+      
+      --pc_enable e o unico que precisa verificar o rst_n
+      --Program Counter
+      if (rst_n = '0') then
+        program_counter <= "00000";
+      elsif (pc_enable = '1') then
+        if (branch = '0') then
+          program_counter <= program_counter + 1;
+        elsif (branch = '1') then
+          program_counter <= mem_addr;
+        end if;
+      end if;
+    end if;
+  end process;
+end rtl;
