@@ -60,3 +60,66 @@ begin
                 end if;
             end if;
     end process;
+    process(clk,estado_atual)
+        begin
+            prox_estado <= estado_atual;
+            case(estado_atual) is
+                when FETCH =>
+                    --ram_write_enable <= '0';
+                    addr_sel <= '1';
+                    c_sel <= '0';
+                    ir_enable <= '1';
+                    flags_reg_enable <= '0';
+                    pc_enable <='0';
+                    write_reg_enable <='0';
+                    halt <= '0';
+                    prox_estado <= DECODE;
+                when DECODE =>
+                    ir_enable <= '0';
+                    case decoded_instruction is
+                        when I_NOP =>
+                            prox_estado <= NOP;
+                            
+                        when I_MOVE =>
+                            prox_estado <= MOVE;
+                        
+                        when I_STORE =>
+                            prox_estado <= STORE;
+                            
+                        when I_LOAD =>
+                            prox_estado <= LOAD;
+
+                        when I_OR =>
+                            operation <= "00";
+                            prox_estado <= ULA;
+
+                        when I_ADD =>
+                            operation <= "01";
+                            prox_estado <= ULA;
+
+                        when I_SUB =>
+                            operation <= "10";
+                            prox_estado <= ULA;
+
+                        when I_AND =>
+                            operation <= "11";
+                            prox_estado <= ULA;
+
+                        when I_BRANCH =>
+                            prox_estado <= BRANCHI;
+
+                        when I_BNEG =>
+                            if (neg_op = '1') then
+                                prox_estado <= BRANCHI;
+                            else
+                                prox_estado <= PROX;
+                            end if;
+                        when I_BZERO =>
+                            if (zero_op = '1') then
+                                prox_estado <= BRANCHI;
+                            else
+                                prox_estado <= PROX;
+                            end if;
+                        when others =>
+                            prox_estado <= HALTI;
+                    end case;
