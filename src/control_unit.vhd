@@ -33,4 +33,30 @@ end control_unit;
 
 architecture rtl of control_unit is
 
-
+type estados is (
+    FETCH,
+    DECODE,
+    PROX,
+    PROX1,
+    LOAD,
+    LOAD1,
+    STORE,
+    MOVE,
+    ULA,
+    BRANCHI,
+    NOP,
+    HALTI
+    );
+    signal estado_atual : estados;
+    signal prox_estado : estados;
+begin
+    process (clk)
+        begin
+            if (clk'event and clk='1') then
+                if (rst_n='0') then
+                    estado_atual <= FETCH;
+                else
+                    estado_atual <= prox_estado;
+                end if;
+            end if;
+    end process;
