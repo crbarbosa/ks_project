@@ -79,6 +79,13 @@ begin
     end if ;
 
     if (instruction(15) = '0')  then
+      case(instruction(11 downto 8)) is
+        when "1010" =>
+          decoded_instruction <=  I_BNZERO;
+          when "1011" =>
+          decoded_instruction <= I_BNNEG;
+      end case ;
+      
       case (instruction(9 downto 8)) is
         when "01" =>
           decoded_instruction <= I_BRANCH;

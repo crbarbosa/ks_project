@@ -114,12 +114,28 @@ begin
                             else
                                 prox_estado <= PROX;
                             end if;
+
+                        when I_BNNEG =>
+                            if (neg_op = '0') then
+                                prox_estado <= BRANCHI;
+                            else
+                                prox_estado <= PROX;
+                            end if;    
+
                         when I_BZERO =>
                             if (zero_op = '1') then
                                 prox_estado <= BRANCHI;
                             else
                                 prox_estado <= PROX;
                             end if;
+
+                        when I_BNZERO =>
+                            if (zero_op = '0') then
+                                prox_estado <= BRANCHI;
+                            else
+                                prox_estado <= PROX;
+                            end if;
+
                         when others =>
                             prox_estado <= HALTI;
                     end case;
